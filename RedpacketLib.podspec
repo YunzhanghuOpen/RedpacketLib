@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|  
   s.name             = 'Redpacket_iOS'
-  s.version          = '3.1.4'
+  s.version          = ‘3.1.3’
   s.summary          = 'RedpacketSDK'
   s.description      = <<-DESC  
                        RedpacketSDK, allow you to send redpacket in your project.
@@ -18,6 +18,6 @@ Pod::Spec.new do |s|
   s.public_header_files = 'RedpacketStaticLib/*.h'
   s.resources = ['RedpacketStaticLib/resources/*.bundle']
   s.frameworks = 'Foundation', 'CoreGraphics', 'UIKit' 
-  #s.resource = "huoyan.bundle"
+  #s.resource = “redpacket.bundle"
 
 end 
