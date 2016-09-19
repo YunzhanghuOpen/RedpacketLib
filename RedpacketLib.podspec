@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|  
-  s.name             = 'Redpacket_iOS'
-  s.version          = ‘3.1.3’
+  s.name             = 'RedpacketLib'
+  s.version          = '3.1.3'
   s.summary          = 'RedpacketSDK'
   s.description      = <<-DESC  
                        RedpacketSDK, allow you to send redpacket in your project.
