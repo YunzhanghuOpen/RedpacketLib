@@ -18,7 +18,7 @@
 #import "RedpacketOpenConst.h"
 #import "RedpacketMessageModel.h"
 #import "RedpacketErrorCode.h"
-#import "RedpackertViewControl.h"
+#import "RedpacketViewControl.h"
 
 #else
 #import <RedpacketLib/YZHRedpacketBridge.h>
@@ -26,7 +26,7 @@
 #import <RedpacketLib/RedpacketOpenConst.h>
 #import <RedpacketLib/RedpacketMessageModel.h>
 #import <RedpacketLib/RedpacketErrorCode.h>
-#import <RedpacketLib/RedpackertViewControl.h>
+#import <RedpacketLib/RedpacketViewControl.h>
 
 #endif
 
