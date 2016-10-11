@@ -30,4 +30,4 @@
 
 #endif
 
-#endif
+#endif /* RedpacketLib_h */

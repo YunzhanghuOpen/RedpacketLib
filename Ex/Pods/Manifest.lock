@@ -1,0 +1,21 @@
+PODS:
+  - AlipayTest (15.0.2)
+  - RedpacketLib (3.1.7)
+
+DEPENDENCIES:
+  - AlipayTest (from `../../alipayTest`)
+  - RedpacketLib (from `../../RedpacketLib`)
+
+EXTERNAL SOURCES:
+  AlipayTest:
+    :path: "../../alipayTest"
+  RedpacketLib:
+    :path: "../../RedpacketLib"
+
+SPEC CHECKSUMS:
+  AlipayTest: '09e144cd062d0694114a47e983dbedd4ad6f115c'
+  RedpacketLib: db721e17f5615f52ab8714a339144cd6a36e0107
+
+PODFILE CHECKSUM: 1be7833c3be8fa6436a99424800cb74191ac7ca5
+
+COCOAPODS: 1.1.0.rc.2

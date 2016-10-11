@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "F2E6CEA1BE478B63BF114A57D673264974631009",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "F2E6CEA1BE478B63BF114A57D673264974631009" : 9223372036854775807,
+    "68708B0E90D38776A54D7D1BA1C38524812DE788" : 9223372036854775807,
+    "129170FBDCBA85F427D53809733224D5F17658EF" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "7A4D5BFA-ACE0-4159-AB3D-96781F57543F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "F2E6CEA1BE478B63BF114A57D673264974631009" : "RedpacketLib\/",
+    "68708B0E90D38776A54D7D1BA1C38524812DE788" : "AlipaySDK\/",
+    "129170FBDCBA85F427D53809733224D5F17658EF" : "alipayTest\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Ex",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Ex\/Ex.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/YunzhanghuOpen\/alipayTest.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "129170FBDCBA85F427D53809733224D5F17658EF"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/DylanDu123\/AlipaySDK.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "68708B0E90D38776A54D7D1BA1C38524812DE788"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/YunzhanghuOpen\/RedpacketLib.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F2E6CEA1BE478B63BF114A57D673264974631009"
+    }
+  ]
+}
