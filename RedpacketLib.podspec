@@ -26,4 +26,5 @@ Pod::Spec.new do |s|
   s.frameworks = 'AudioToolbox'
   #s.resource = “redpacket.bundle"
   s.documentation_url = 'http://yunzhanghu-com.oss-cn-qdjbp-a.aliyuncs.com/%E4%BA%91%E8%B4%A6%E6%88%B7%E7%BA%A2%E5%8C%85SDK%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97%28iOS%29%20v3_1_2.pdf'
+  s.dependency 'RedPacketAlipay'
 end
