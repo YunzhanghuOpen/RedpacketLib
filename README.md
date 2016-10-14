@@ -2,7 +2,7 @@
 ___________
 ## 导航
 
-  1.[注册红包token](https://github.com/YunzhanghuOpen/RedpacketLib/blob/master/README.md#注册红包 Token)
+  1.[注册红包token](https://github.com/YunzhanghuOpen/RedpacketLib/blob/master/README.md#注册红包)
 
   2.[发送红包](https://github.com/YunzhanghuOpen/RedpacketLib/blob/master/README.md#发送红包)
 
@@ -15,7 +15,7 @@ ___________
   6.[可能的错误](https://github.com/YunzhanghuOpen/RedpacketLib/blob/master/README.md#可能的错误)
 ___
 
->##  注册红包 Token
+>##  注册红包
 
 ### 注册完成后会保存到SDK中， SDK自带错误重试功能，App只负责传入正确的参数。
 
