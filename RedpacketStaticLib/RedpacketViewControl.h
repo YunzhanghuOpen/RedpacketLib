@@ -23,6 +23,8 @@ typedef void(^RedpacketMemberListFetchBlock)(NSArray<RedpacketUserInfo *> * grou
 typedef void (^RedpacketMemberListBlock)(RedpacketMemberListFetchBlock completionHandle);
 typedef void(^RedpacketAdvertisementAction)(NSDictionary *args);
 typedef void(^RedpacketGrabBlock)(RedpacketMessageModel *messageModel);
+typedef void(^RedpacketIDGenerateBlock)(NSString *redpacketID);
+typedef void(^RedpacketCheckRedpacketStatusBlock)(RedpacketMessageModel *model, NSError *error);
 
 
 /** 发红包的控制器, 开发者无需持有此对象 */
@@ -56,13 +58,15 @@ typedef void(^RedpacketGrabBlock)(RedpacketMessageModel *messageModel);
  
  @optional
         @param memberBlock      专属红包获取群成员回调（非专属红包不传）
+        @param generateBlock    红包ID生成的回调(可以不传)
  */
 + (void)presentRedpacketViewController:(RPRedpacketControllerType)controllerType
                        fromeController:(UIViewController *)fromeController
                       groupMemberCount:(NSInteger)count
                  withRedpacketReceiver:(RedpacketUserInfo *)receiver
                        andSuccessBlock:(RedpacketSendBlock)sendBlock
-         withFetchGroupMemberListBlock:(RedpacketMemberListBlock)memberBlock;
+         withFetchGroupMemberListBlock:(RedpacketMemberListBlock)memberBlock
+           andGenerateRedpacketIDBlock:(RedpacketIDGenerateBlock)generateBlock;
 
 /** 弹出零钱页面控制器 */
 + (void)presentChangePocketViewControllerFromeController:(UIViewController *)viewController;
@@ -72,5 +76,9 @@ typedef void(^RedpacketGrabBlock)(RedpacketMessageModel *messageModel);
 
 /** 零钱接口返回零钱 */
 + (void)getChangeMoney:(void (^)(NSString *amount))amount;
+
+/** 红包状态查询 */
++ (void)checkRedpacketStatusWithRedpacketID:(NSString *)redpacketID
+                              andCheckBlock:(RedpacketCheckRedpacketStatusBlock)checkBlock;
 
 @end
