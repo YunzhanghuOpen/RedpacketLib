@@ -10,7 +10,12 @@
 
 typedef enum{
     RedpacketSuccessful        = 0000,  /*操作成功*/
+    RedpacketHBOcciOvermuch    = 9,     /*接口调用频率太高，请稍候重试*/
+    
+    RedpacketHBDeviceIDInvalid = 101,    /*设备号无效*/
+    
     RedpacketOtherError        = 100,   /*其它错误操作导致失败*/
+    RedpacketChangeDevice,              /*设备号无效*/
     RedpacketParamInsuf        = 1000,  /*请求参数不足或者格式不正确*/
 
     RedpacketMobilIllegal      = 1001,  /*手机号格式不正确*/
@@ -29,7 +34,11 @@ typedef enum{
     RedpacketIDCardOverMuch,             /*实名认证请求次数过多*/
 
     RedpacketVerifyFailed     = 1020,   /*实名认证失败*/
-
+    RedpacketVerifyIDCard,               /*应国家监管政策的要求，零钱支付达 %0.2f 元，需要进行身份验证。请上传身份证照片进行验证*/
+    RedpacketVerifyIDCarding  = 1023,    /*实名认证中*/
+    RedpacketVerifyIDCardFailed,         /*身份证校验失败*/
+    RedpacketVerifyIDCardFailedWithOutCard, /*身份证校验失败, 有密码，无卡，设备变更后的情况*/
+    
     RedpacketSubBankNotExisted = 2011,  /*联行不存在*/
     RedpacketCardBinNotExisted,         /*该银行卡不存在*/
     RedapcketBankNotSupported,          /*暂不支持此银行*/
@@ -53,14 +62,13 @@ typedef enum{
 
     RedpacketHBExpried         = 3011,  /*红包已过期*/
     RedpacketHBReceiverError,           /*此红包不属于您*/
-    RedpacketHBCompleted,               /*此红包已经被领取*/
+    RedpacketHBCompleted,               /*出现拆红包界面，拆而未抢到*/
+    RedpacketHBGetReceivedBefore,       /*此红包自己已领取过，多设备登录遇到的问题*/
 
     RedpacketHBQuotaNoPayPWD   = 3021,  /*无密码支付剩余额度提示*/
     RedpacketHBQuotaDay ,                /*当日发红包限额提示*/
-
-    RedpacketHBOcciOvermuch    = 9,     /*接口调用频率太高，请稍候重试*/
-
-    RedpacketHBDeviceIDInvalid = 101    /*设备号无效*/
+    
+    RedpacketUnAliAuthed       = 60201  /*支付宝支付版本，支付宝未授权*/
 
 
 }RedpacketErrorCode;

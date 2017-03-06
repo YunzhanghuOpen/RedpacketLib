@@ -10,129 +10,76 @@
 #import <UIKit/UIKit.h>
 #import "RedpacketMessageModel.h"
 
-typedef NS_ENUM(NSInteger,RPSendRedPacketViewControllerType){
-    RPSendRedPacketViewControllerSingle, //点对点红包
-    RPSendRedPacketViewControllerGroup,  //普通群红包
-    RPSendRedPacketViewControllerMember, //包含专属红包的群红包
+
+typedef NS_ENUM(NSInteger,RPRedpacketControllerType){
+    RPRedpacketControllerTypeSingle,    //点对点红包
+    RPRedpacketControllerTypeRand,      //小额度随机红包
+    RPRedpacketControllerTypeTransfer,  //转账(仅京东支付版本支持)
+    RPRedpacketControllerTypeGroup,     //群红包
 };
 
-@protocol RedpacketViewControlDelegate <NSObject>
-
-@optional
-- (NSArray<RedpacketUserInfo *> *)groupMemberList __attribute__((deprecated("请用getGroupMemberListCompletionHandle：方法替换")));
-- (void)getGroupMemberListCompletionHandle:(void (^)(NSArray<RedpacketUserInfo *> * groupMemberList))completionHandle;
-
-@end
-
-//  抢红包成功回调
-typedef void(^RedpacketGrabBlock)(RedpacketMessageModel *messageModel);
-
-//  环信接口发送红包消息回调
 typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
+typedef void(^RedpacketMemberListFetchBlock)(NSArray<RedpacketUserInfo *> * groupMemberList);
+typedef void(^RedpacketMemberListBlock)(RedpacketMemberListFetchBlock completionHandle);
+typedef void(^RedpacketAdvertisementAction)(NSDictionary *args);
+typedef void(^RedpacketGrabBlock)(RedpacketMessageModel *messageModel);
+typedef void(^RedpacketIDGenerateBlock)(NSString *redpacketID);
+typedef void(^RedpacketCheckRedpacketStatusBlock)(RedpacketMessageModel *model, NSError *error);
 
-/**
- *  发红包的控制器
- */
+
+/** 发红包的控制器, 开发者无需持有此对象 */
 @interface RedpacketViewControl : NSObject
 
-/**
- *  当前窗口的会话信息，个人或者群组
+/*!
+ 抢红包方法
+ 
+ @required
+        @param messageModel 红包相关信息
+        @param fromViewController 当前页面控制器
+        @param grabTouch          抢红包成功后的回调
+ 
+ @optional
+        @param advertisementAction 广告红包用户行为回调(广告红包后才需要传)
  */
-@property (nonatomic, strong) RedpacketUserInfo *converstationInfo;
++ (void)redpacketTouchedWithMessageModel:(RedpacketMessageModel *)messageModel
+                     fromViewController:(UIViewController *)fromViewController
+                      redpacketGrabBlock:(RedpacketGrabBlock)grabTouch
+                     advertisementAction:(RedpacketAdvertisementAction)advertisementAction;
 
-/**
- *  当前的聊天窗口
+/*!
+ 发送红包方法
+ 
+ @required
+        @param controllerType   发送红包类型（点对点红包 小额度红包 转账红包 只限在单人聊天中使用）
+        @param fromeController  当前页面控制器
+        @param count            群成员人数（可传0）
+        @param receiver         红包接受者信息 (群组时接收者ID为当前会话ID，头像，昵称不传)
+        @param sendBlock        红包发送成功后的回调
+        @param generateBlock    红包ID生成的回调
+ 
+ @optional
+        @param memberBlock      专属红包获取群成员回调（非专属红包不传）
+        @param generateBlock    红包ID生成的回调(可以不传)
  */
-@property (nonatomic, weak) UIViewController *conversationController;
++ (void)presentRedpacketViewController:(RPRedpacketControllerType)controllerType
+                       fromeController:(UIViewController *)fromeController
+                      groupMemberCount:(NSInteger)count
+                 withRedpacketReceiver:(RedpacketUserInfo *)receiver
+                       andSuccessBlock:(RedpacketSendBlock)sendBlock
+         withFetchGroupMemberListBlock:(RedpacketMemberListBlock)memberBlock
+           andGenerateRedpacketIDBlock:(RedpacketIDGenerateBlock)generateBlock;
 
-/**
- *  定向红包返回时的代理
- */
-@property (nonatomic, weak) id <RedpacketViewControlDelegate> delegate;
+/** 弹出零钱页面控制器(如果为支付宝授权版本则是红包记录页面) */
++ (void)presentChangePocketViewControllerFromeController:(UIViewController *)viewController;
 
-/**
- *  用户抢红包触发事件
- *
- *  @param messageModel 消息Model
- */
-- (void)redpacketCellTouchedWithMessageModel:(RedpacketMessageModel *)messageModel;
+/** 零钱页面控制器(如果为支付宝授权版本则是红包记录页面) */
++ (UIViewController *)changePocketViewController;
 
-/**
- *  设置发送红包，抢红包成功回调
- *
- *  @param grabTouch 抢红包回调
- *  @param sendBlock 发红包回调
- */
-- (void)setRedpacketGrabBlock:(RedpacketGrabBlock)grabTouch andRedpacketBlock:(RedpacketSendBlock)sendBlock;
-
-#pragma mark - Controllers
-
-- (UIViewController *)redpacketViewController __attribute__((deprecated("请用presentRedPacketViewControllerWithType: memberCount:替换")));
-- (UIViewController *)redPacketMoreViewControllerWithGroupMembers:(NSArray *)groupMemberArray __attribute__((deprecated("请用presentRedPacketViewControllerWithType: memberCount:替换")));
-- (void)presentRedPacketMoreViewControllerWithGroupMembers:(NSArray *)groupMemberArray __attribute__((deprecated("请用presentRedPacketViewControllerWithType: memberCount:替换")));
-- (void)presentRedPacketViewController __attribute__((deprecated("请用presentRedPacketViewControllerWithType: memberCount:替换")));
-
-/**
- *  弹出红包控制器
- *
- *  @param rpType 红包页面类型
- *  @param count  群红包群人数
- */
-- (void)presentRedPacketViewControllerWithType:(RPSendRedPacketViewControllerType)rpType memberCount:(NSInteger)count;
-/**
- *  生成红包Controller
- *
- *  @param rpType 红包页面类型
- *  @param count  群红包群人数
- *
- *  @return 红包Controller
- */
-- (UIViewController *)redPacketViewControllerWithType:(RPSendRedPacketViewControllerType)rpType memberCount:(NSInteger)count;
-
-/**
- *  生成转账Controller
- *  
- *  @param userInfo 用户相关属性
- *
- *  @return 转账Controller
- */
-- (void)presentTransferViewControllerWithReceiver:(RedpacketUserInfo *)userInfo;
-
-/**
- *  生成转账DetailController
- *
- *
- *
- *  @return 转账Controller
- */
-- (void)presentTransferDetailViewController:(RedpacketMessageModel *)model;
-
-/**
- *  零钱页面
- *
- *  @return 零钱页面，App可以放在需要的位置
- */
-+ (UIViewController *)changeMoneyController;
-
-/**
- *  零钱明细页面
- *
- *  @return 零钱明细页面，App可以放在需要的位置
- */
-+ (UIViewController *)changeMoneyListController;
-
-#pragma mark - ShowViewControllers
-
-/**
- *  Present的方式显示零钱页面
- */
-- (void)presentChangeMoneyViewController;
-
-/**
- *  零钱接口返回零钱
- *
- *  @param amount 零钱金额
- */
+/** 零钱接口返回零钱(如果为支付宝授权版本则不存在此接口) */
 + (void)getChangeMoney:(void (^)(NSString *amount))amount;
+
+/** 红包状态查询 */
++ (void)checkRedpacketStatusWithRedpacketID:(NSString *)redpacketID
+                              andCheckBlock:(RedpacketCheckRedpacketStatusBlock)checkBlock;
 
 @end
