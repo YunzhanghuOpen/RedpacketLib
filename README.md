@@ -1,244 +1,189 @@
-###云账户红包SDK接入指南(iOS)
+## 1. 开发准备
 
-#####Step 1. 首先注册红包Token，注册完成后会保存到SDK中， SDK自带错误重试功能，App只负责传入正确的参数。
+**1.1 注册商户**
+* [注册地址](https://bv2.yunzhanghu.com/app/register)
 
-* 方法一：基于云账户提供的签名机制进行的校验 	[云账户REST API文档](http://yunzhanghu-com.oss-cn-qdjbp-a.aliyuncs.com/%E4%BA%91%E8%B4%A6%E6%88%B7%E7%BA%A2%E5%8C%85%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3-v3_0_1.pdf)
+**1.2 下载SDK相关资源(目前共两个版本)**
 
-```
-/**
- *  Method1:通过签名的方式获取Token (以下参数的获取方式见RestAPI集成文档)
- *
- *  @param sign
- *  @param partner
- *  @param appUserid  用户在App的用户ID
- *  @param timeStamp  时间戳
- */
-- (void)configWithSign:(NSString *)sign
-               partner:(NSString *)partner
-             appUserId:(NSString *)appUserid
-             timestamp:(NSString *)timestamp;
+1. [官网下载集成](https://www.yunzhanghu.com/developer-im.html)
+2. cocoapods集成（红包SDK默认关联了支付宝SDK，无需再集成）
 
+    * 京东版本(需要绑银行卡)：[RedpacketLib](https://cocoapods.org/?q=Redpacket)
+    * 支付宝版本：[RedpacketAliAuthLib](https://cocoapods.org/?q=RedpacketAliAuthLib)
 
-```
+3. [集成演示Demo](https://github.com/YunzhanghuOpen/Redpacket-Demo-iOS)
 
-用此方法需要遵循代理
+## 2. 红包SDK配置
 
-**@protocol:**`YZHRedpacketBridgeDelegate`
+* 需要在工程中的`BuildSetting`中搜索`OtherLinkFlag`并添加`-ObjC`标记
+* 需要支持支付宝回调，请在`Info.plist`中添加`URL Types`，默认添加为APP的 `Bundle Identifier`
+* 需要处理支付宝回调，请在[集成Demo](https://github.com/YunzhanghuOpen/Redpacket-Demo-iOS)中查找`AppDelegate+Redpacket`,并添加到工程
+
+## 3. 红包SDK初始化
+
+**3.1 注册Token（共三种）**
 
 ```
+@interface YZHRedpacketBridge : NSObject
+@property (nonatomic, weak) id <YZHRedpacketBridgeDelegate> delegate;
+// 注册Token回调
+- (void)redpacketFetchRegisitParam:(FetchRegisitParamBlock)fetchBlock withError:(NSError *)error;
 
-/**
- *  SDK错误处理代理
- *
- *  @param error 错误内容
- *  @param code  错误码
- *  @discussion
-    1.通过ImToken获取红包Token, 红包Token过期后，请求红包Token时，ImToken过期触发回调，刷新ImToken后，重新注册红包Token。
-    2.通过Sign获取红包Token， 红包Token过期后，直接触发。
- */
-- (void)redpacketError:(NSString *)error withErrorCode:(NSInteger)code;
+// 注册信息通过以下回调传回SDK
+typedef void (^FetchRegisitParamBlock)(RedpacketRegisitModel *model); 
 
 ```
-
-* 方法二：基于IMToken方式进行的校验
-
-```
-/**
- *  基于IMToken的校验方式
- *
- *  @param appKey    AppKey,由IM或者云账户提供
- *  @param appUserId 用户在App的用户ID
- *  @param imToken   IM的Token
- */
-- (void)configWithAppKey:(NSString *)appKey
-               appUserId:(NSString *)appUserId
-                 imToken:(NSString *)imToken;
-                 
-                 
-
-* 方法三： 容联云通讯， 容联云与红包SDK默认已经集成，升级容联云最新的SDK, 此步可忽略.  
+**1. 签名方式（任何App都可以基于此方式实现红包功能）**
+ 签名方法见：[云账户REST API文档](https://github.com/YunzhanghuOpen/yun-doc/blob/master/intro/server.md)
 
 ```
-
-
-#####Step 2. 调用发红包页面
++ (RedpacketRegisitModel *)signModelWithAppUserId:(NSString *)appUserId     //  App的用户ID
+                                       signString:(NSString *)sign          //  当前用户的签名（签名方法获取）
+                                          partner:(NSString *)partner       //  在云账户注册的合作者（网站注册后可得到）
+                                     andTimeStamp:(NSString *)timeStamp;    //  签名的时间戳（签名方法获取）
+```
+**2. 环信方式**
 
 ```
-    /**
-     * 红包功能的控制器， 产生用户单击红包后的各种动作
-     */
-    _viewControl = [[RedpacketViewControl alloc] init];
-    //  当前界面的控制器，SDK会将视图添加到当前视图
-    _viewControl.conversationController = self;
-	// 群红包需要的成员列表代理
-    _viewControl.delegate = self;
-    //  红包接收者的相关信息
-    RedpacketUserInfo *conversationInfo = [RedpacketUserInfo new];
-    conversationInfo.userId = #当前对话窗口ID，单聊或群组ID#;
-    _viewControl.converstationInfo = conversationInfo;
-    
-   [_viewControl setRedpacketGrabBlock:^(RedpacketMessageModel *messageModel) {
-        //  抢红包成功后的回调
-        
-   } andRedpacketBlock:^(RedpacketMessageModel *model) {
-        //  发送红包成功后的回调
-		
-   }];
-        
++ (RedpacketRegisitModel *)easeModelWithAppKey:(NSString *)appkey           //  环信的注册商户Key
+                                      appToken:(NSString *)appToken         //  环信IM的Token
+                                  andAppUserId:(NSString *)appUserId;       //  环信IM的用户ID
+                                  
 ```
-
-* 实现定向红包群组成员列表的代理
-
-**@file:**`RedpacketViewControl.h`
-
-**@protocol:**`RedpacketViewControlDelegate`
+**3. 容联云方式**
 
 ```
-/**
- *  获取定向红包成员列表
- */
-- (void)getGroupMemberListCompletionHandle:(void (^)(NSArray<RedpacketUserInfo *> * groupMemberList))completionHandle;
++ (RedpacketRegisitModel *)rongCloudModelWithAppId:(NSString *)appId        //  容联云的AppId
+                                         appUserId:(NSString *)appUserId;   //  容联云的用户ID
+                                         
+```
+**3.2 红包Token注册时机**
+
+开发者实现以上方法后，SDK会在下列情况时进行回调
+    1. 使用红包服务，且Token不存在时
+    2. 使用红包服务，但是Token已经过期
+
+**3.3 实现获取当前用户信息获的代理**
 
 ```
+@interface YZHRedpacketBridge : NSObject
+@property (nonatomic, weak) id <YZHRedpacketBridgeDataSource>dataSource;
 
-* 发红包
+@protocol YZHRedpacketBridgeDataSource <NSObject>
 
-```
-
-typedef NS_ENUM(NSInteger,RPSendRedPacketViewControllerType){
-    RPSendRedPacketViewControllerSingle, //点对点红包
-    RPSendRedPacketViewControllerGroup,  //普通群红包
-    RPSendRedPacketViewControllerMember, //包含专属红包的群红包
-};
-
-- (void)presentRedPacketViewControllerWithType:(RPSendRedPacketViewControllerType)rpType memberCount:(NSInteger)count;
-
-``` 
-
-#####Step 3. 调用抢红包页面
-
-* 实现获取当前用户信息的代理
-
-**@file:**`YZHRedpacketBridgeProtocol.h`
-
-**@protocol:**`YZHRedpacketBridgeDataSource`
-
-```
-/**
- *  获取当前用户的信息，用户ID必须要传
- *
- *  @return 用户信息Info
- */
 - (RedpacketUserInfo *)redpacketUserInfo;
+- 
+@end
 
 ```
 
-* 抢红包的方法
+### 4. 发红包
+**单聊红包（限单聊）**
 
 ```
-@class:RedpacketViewControl
-[self.viewControl redpacketCellTouchedWithMessageModel:#RedpacketMessageModel#];
-
++ (void)presentRedpacketViewController:RPRedpacketControllerTypeSingle
+                       fromeController:#当前页面的控制器#
+                      groupMemberCount:0
+                 withRedpacketReceiver:#红包接收者信息#
+                       andSuccessBlock:#发送成功后的回调#
+         withFetchGroupMemberListBlock:nil
+         andGenerateRedpacketIDBlock:nil
+         
 ```
 
-* RedpacketMessageModel需要传递的参数
+**小额随机红包（限单聊）**
 
 ```
-/**
- *  红包ID
- */
-@property (nonatomic, copy) NSString *redpacketId;
-
-/**
- *  红包发送者的头像url，昵称
- */
-@property (nonatomic, strong) RedpacketUserInfo *redpacketSender;
-
++ (void)presentRedpacketViewController:RPRedpacketControllerTypeRand
+                       fromeController:#当前页面的控制器#
+                      groupMemberCount:0
+                 withRedpacketReceiver:#红包接收者信息#
+                       andSuccessBlock:#发送成功后的回调#
+         withFetchGroupMemberListBlock:nil
+         andGenerateRedpacketIDBlock:nil
 ```
 
-#####Step 4. 获取零钱和零钱页面
+**普通群聊红包（限群聊）**
 
 ```
-@class:RedpacketViewControl
-/**
- *  零钱页面
- *
- *  @return 零钱页面，App可以放在需要的位置
- */
-+ (UIViewController *)changeMoneyController;
-
-/**
- *  零钱接口返回零钱
- *
- *  @param amount 零钱金额
- */
-+ (void)getChangeMoney:(void (^)(NSString *amount))amount;
-
++ (void)presentRedpacketViewController:RPRedpacketControllerTypeGroup
+                       fromeController:#当前页面的控制器#
+                      groupMemberCount:0
+                 withRedpacketReceiver:#红包接收者信息#
+                       andSuccessBlock:#发送成功后的回调#
+         withFetchGroupMemberListBlock:nil
+         andGenerateRedpacketIDBlock:nil
+         
 ```
 
-####Step 5. 支持支付宝
-[支付宝集成链接](https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.UccR9D&treeId=59&articleId=103676&docType=1)
+**专属红包（限群聊）**
 
-1. 项目支持支付宝支付，所以请在项目中添加支付宝SDK，和支付宝需要的相关Framework.
-   Build Phases中添加支付宝的依赖库**CoreMotion.framework**
-
-2. App Transport Security Settings需要支持支付宝
-
-3. 添加URLScheme回调, 默认为`App的identifier Bundle`， 并通过`RedpacketBridge`中的`redacketURLScheme`传入SDK。
-
-4. 在AppDelegate导入头文件`#import "AlipaySDK.h"`，并监听回调
+* 可以指定群里某一个接收者
+* 包含普通群组功能
 
 ```
- #ifdef REDPACKET_AVALABLE
- #pragma mark - Alipay
++ (void)presentRedpacketViewController:RPRedpacketControllerTypeGroup
+                       fromeController:#当前页面控制器#
+                      groupMemberCount:0
+                 withRedpacketReceiver:#红包接收者信息#
+                       andSuccessBlock:#发送成功后的回调#
+         withFetchGroupMemberListBlock:#获取群成员列表的回调#
+         andGenerateRedpacketIDBlock:nil
+```
 
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAlipayNotifaction object:nil];
-}
+* 红包发送成功后，调用`RedpacketMessageModel`中的`redpacketMessageModelToDic`生成需要在消息通道中传递的数据
 
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
-    
-    if ([url.host isEqualToString:@"safepay"]) {
-        //跳转支付宝钱包进行支付，处理支付结果
-        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAlipayNotifaction object:resultDic];
-        }];
-    }
-    return YES;
-}
 
-// NOTE: 9.0以后使用新API接口
-- (BOOL)application:(UIApplication *)app
-            openURL:(NSURL *)url
-            options:(NSDictionary<NSString*, id> *)options
-{
-    if ([url.host isEqualToString:@"safepay"]) {
-        //跳转支付宝钱包进行支付，处理支付结果
-        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAlipayNotifaction object:resultDic];
-        }];
-    }
-    return YES;
-}
+## 5. 拆红包
 
- #endif
+* 他人收到红包消息后，将消息体中的字典通过`RedpacketMessageModel`中的`redpacketMessageModelWithDic`转换成`MessageModel`然后调用下列方法
+
+```
++ (void)redpacketTouchedWithMessageModel:#上文中生成的MessageModel#
+                     fromViewController:#当前页面控制器#
+                      redpacketGrabBlock:#拆红包成功后的回调#
+                     advertisementAction:nil
+```
+
+**营销红包(原广告红包)**
+
+```
++ (void)redpacketTouchedWithMessageModel:#上文中生成的MessageModel#
+                     fromViewController:#当前页面控制器#
+                      redpacketGrabBlock:#拆红包成功后的回调#
+                     advertisementAction:#广告红包抢红包成功后的行为回调(查看详情，分享)#
 
 ```
 
-##### 可能的错误
+## 5. 关于GenerateRedpacketIDBlock （可选策略）
+ 在发红包页面可以拿到红包ID， 通过红包详情查询方法，可以查询红包详情。此方案为在极端情况下，红包SDK发红包一直超时时，红包发送成功，但是开发者没有收到回调。开发者可以通过此ID，重新查询红包是否发送成功。此方案为可选策略，开发者可以忽略。
 
-* 链接标记
+## 6. 注意事项
 
-Bulid Settings 中，Other Linker Flags标记
-如果没有请加上 -Objc
-如果是-force_load，请加上libRedpacket.a的路径地址
+**相关UI（红包样式）**
 
-* Build Phases中支付宝的依赖库**CoreMotion.framework**是否缺失。
+* [集成Demo](https://github.com/YunzhanghuOpen/Redpacket-Demo-iOS)中已经提供开源代码，请在Demo中查找其它IM，请在不同的IM开源Demo中查找即可。
 
-* 参见5，检查支付宝相关配置是否正确。
- [支付宝集成链接](https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.UccR9D&treeId=59&articleId=103676&docType=1)
+**三方支付回调**
+
+* 请在[集成Demo](https://github.com/YunzhanghuOpen/Redpacket-Demo-iOS) 中查找`AppDelegate+Redpacket`，在工程中引入即可
+
+**回调地址(默认为`Bundle Identifier`)**
+
+* 请在工程中的Info.plist中添加此回调地址
+
+**Other Link Flag（引入类别）**
+
+* 请在工程中的BuildSetting中搜索`OtherLinkFlag`并添加`-ObjC`标记
+
+**支付宝集成文档（如果遇到了支付宝集成困难请查询此文档）**
+
+* [支付宝集成链接](https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.UccR9D&treeId=59&articleId=103676&docType=1)
+
+**集成Demo**（可以演示也可以参考集成方式）
+
+* [集成Demo](https://github.com/YunzhanghuOpen/Redpacket-Demo-iOS)
+
+
+
 
