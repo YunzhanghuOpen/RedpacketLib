@@ -10,6 +10,10 @@
 
 typedef enum{
     RedpacketSuccessful        = 0000,  /*操作成功*/
+    RedpacketHBOcciOvermuch    = 9,     /*接口调用频率太高，请稍候重试*/
+    
+    RedpacketHBDeviceIDInvalid = 101,    /*设备号无效*/
+    
     RedpacketOtherError        = 100,   /*其它错误操作导致失败*/
     RedpacketChangeDevice,              /*设备号无效*/
     RedpacketParamInsuf        = 1000,  /*请求参数不足或者格式不正确*/
@@ -63,10 +67,8 @@ typedef enum{
 
     RedpacketHBQuotaNoPayPWD   = 3021,  /*无密码支付剩余额度提示*/
     RedpacketHBQuotaDay ,                /*当日发红包限额提示*/
-
-    RedpacketHBOcciOvermuch    = 9,     /*接口调用频率太高，请稍候重试*/
-
-    RedpacketHBDeviceIDInvalid = 101    /*设备号无效*/
+    
+    RedpacketUnAliAuthed       = 60201  /*支付宝支付版本，支付宝未授权*/
 
 
 }RedpacketErrorCode;

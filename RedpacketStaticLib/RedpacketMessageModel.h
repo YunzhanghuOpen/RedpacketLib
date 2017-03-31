@@ -9,6 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "RedpacketOpenConst.h"
 
+@class RedpacketMessageModel;
+@protocol RedpacketMessagePrivateProtocol <NSObject>
+
++ (RedpacketMessageModel *)modelWithCheckResult:(NSDictionary *)dict;
+
+@end
+
 typedef NS_ENUM(NSInteger, RedpacketMessageType) {
 
     RedpacketMessageTypeRedpacket = 1001,           /***  红包消息*/
@@ -37,7 +44,7 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
 
 };
 
-@interface RedpacketUserInfo : NSObject <NSCopying>
+@interface RedpacketUserInfo : NSObject
 /**
  *  用户的Id,
  */
@@ -59,8 +66,7 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
 @end
 
 
-@interface RedpacketViewModel : NSObject <NSCopying>
-
+@interface RedpacketViewModel : NSObject
 /**
  *  红包金额
  */
@@ -87,7 +93,7 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
 /**
  *  红包消息
  */
-@interface RedpacketMessageModel : NSObject <NSCopying>
+@interface RedpacketMessageModel : NSObject <RedpacketMessagePrivateProtocol>
 
 /**
  *  群聊天窗口ID,如果groupID为"",则视为单聊

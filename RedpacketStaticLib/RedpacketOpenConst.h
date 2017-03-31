@@ -14,6 +14,11 @@
 
 /**
  *  取消支付的通知
+ */
+UIKIT_EXTERN NSString *const RedpacketAliAuthNotifaction;
+
+/**
+ *  取消支付的通知
  */ 
 UIKIT_EXTERN NSString *const RedpacketCancelPayNotifaction;
 

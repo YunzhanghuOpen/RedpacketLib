@@ -14,13 +14,13 @@
 typedef NS_ENUM(NSInteger,RPRedpacketControllerType){
     RPRedpacketControllerTypeSingle,    //点对点红包
     RPRedpacketControllerTypeRand,      //小额度随机红包
-    RPRedpacketControllerTypeTransfer,  //转账
+    RPRedpacketControllerTypeTransfer,  //转账(仅京东支付版本支持)
     RPRedpacketControllerTypeGroup,     //群红包
 };
 
 typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
 typedef void(^RedpacketMemberListFetchBlock)(NSArray<RedpacketUserInfo *> * groupMemberList);
-typedef void (^RedpacketMemberListBlock)(RedpacketMemberListFetchBlock completionHandle);
+typedef void(^RedpacketMemberListBlock)(RedpacketMemberListFetchBlock completionHandle);
 typedef void(^RedpacketAdvertisementAction)(NSDictionary *args);
 typedef void(^RedpacketGrabBlock)(RedpacketMessageModel *messageModel);
 typedef void(^RedpacketIDGenerateBlock)(NSString *redpacketID);
@@ -42,7 +42,7 @@ typedef void(^RedpacketCheckRedpacketStatusBlock)(RedpacketMessageModel *model, 
         @param advertisementAction 广告红包用户行为回调(广告红包后才需要传)
  */
 + (void)redpacketTouchedWithMessageModel:(RedpacketMessageModel *)messageModel
-                     fromViewController:(UIViewController *)fromViewController
+                      fromViewController:(UIViewController *)fromViewController
                       redpacketGrabBlock:(RedpacketGrabBlock)grabTouch
                      advertisementAction:(RedpacketAdvertisementAction)advertisementAction;
 
@@ -55,6 +55,7 @@ typedef void(^RedpacketCheckRedpacketStatusBlock)(RedpacketMessageModel *model, 
         @param count            群成员人数（可传0）
         @param receiver         红包接受者信息 (群组时接收者ID为当前会话ID，头像，昵称不传)
         @param sendBlock        红包发送成功后的回调
+        @param generateBlock    红包ID生成的回调
  
  @optional
         @param memberBlock      专属红包获取群成员回调（非专属红包不传）
@@ -68,13 +69,13 @@ typedef void(^RedpacketCheckRedpacketStatusBlock)(RedpacketMessageModel *model, 
          withFetchGroupMemberListBlock:(RedpacketMemberListBlock)memberBlock
            andGenerateRedpacketIDBlock:(RedpacketIDGenerateBlock)generateBlock;
 
-/** 弹出零钱页面控制器 */
+/** 弹出零钱页面控制器(如果为支付宝授权版本则是红包记录页面) */
 + (void)presentChangePocketViewControllerFromeController:(UIViewController *)viewController;
 
-/** 零钱页面控制器 */
+/** 零钱页面控制器(如果为支付宝授权版本则是红包记录页面) */
 + (UIViewController *)changePocketViewController;
 
-/** 零钱接口返回零钱 */
+/** 零钱接口返回零钱(如果为支付宝授权版本则不存在此接口) */
 + (void)getChangeMoney:(void (^)(NSString *amount))amount;
 
 /** 红包状态查询 */
