@@ -24,8 +24,8 @@ Pod::Spec.new do |s|
   s.source_files = 'RedpacketStaticLib/*.{h,m}'
   s.public_header_files = 'RedpacketStaticLib/*.h'
   s.resources = ['RedpacketStaticLib/resources/*.bundle']
-  s.frameworks = 'AudioToolbox'
+  s.frameworks = 'AudioToolbox', 'CFNetwork'
   #s.resource = “redpacket.bundle"
   s.documentation_url = 'https://new.yunzhanghu.com/'
-  s.dependency 'RPAlipayLib'
+  s.dependency 'RedPacketAlipay'
 end
