@@ -11,8 +11,8 @@
 typedef NS_ENUM(NSInteger,RPRedpacketControllerType){
     RPRedpacketControllerTypeSingle,    //点对点红包
     RPRedpacketControllerTypeRand,      //小额度随机红包
-    RPRedpacketControllerTypeTransfer,  //转账(仅京东支付版本支持)
     RPRedpacketControllerTypeGroup,     //群红包
+    RPRedpacketControllerTypeTransfer   //转账(仅京东支付版本支持)
 };
 
 /// 发红包成功后的回调， MessageModel红包相关的数据，发红包者信息，收红包者信息，抢到的红包金额
