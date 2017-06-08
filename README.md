@@ -1,5 +1,5 @@
-###云账户红包SDK接入指南(iOS)
-- 版本号：`3.4.0`
+### 云账户红包SDK接入指南(iOS)
+
 - [集成Demo](https://github.com/YunzhanghuOpen/Redpacket-Demo-iOS)
 - [官网](https://www.yunzhanghu.com)
 
