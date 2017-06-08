@@ -13,20 +13,18 @@
 
 #if TARGET_OS_IPHONE
 
-#import "YZHRedpacketBridge.h"
-#import "YZHRedpacketBridgeProtocol.h"
-#import "RedpacketOpenConst.h"
-#import "RedpacketMessageModel.h"
-#import "RedpacketErrorCode.h"
+#import "RPRedpacketBridge.h"
+#import "RPRedpacketModel.h"
+#import "RPRedpacketErrorCode.h"
 #import "RedpacketViewControl.h"
+#import "RPUserInfo.h"
 
 #else
-#import <RedpacketLib/YZHRedpacketBridge.h>
-#import <RedpacketLib/YZHRedpacketBridgeProtocol.h>
-#import <RedpacketLib/RedpacketOpenConst.h>
-#import <RedpacketLib/RedpacketMessageModel.h>
-#import <RedpacketLib/RedpacketErrorCode.h>
+#import <RedpacketLib/RPRedpacketBridge.h>
+#import <RedpacketLib/RPRedpacketModel.h>
+#import <RedpacketLib/RPRedpacketErrorCode.h>
 #import <RedpacketLib/RedpacketViewControl.h>
+#import <RedpacketLib/RPUserInfo.h>
 
 #endif
 
