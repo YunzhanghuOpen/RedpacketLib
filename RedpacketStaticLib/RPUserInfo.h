@@ -1,10 +1,11 @@
-//
-//  RPUserInfo.h
-//  RedpacketRequestDataLib
-//
-//  Created by Mr.Yang on 2017/6/6.
-//  Copyright © 2017年 Mr.Yang. All rights reserved.
-//
+
+ // Create by Mr.Yang 
+ // Copyright © 2017年 云账户. All rights reserved. 
+ // 云账户：http://www.yunzhanghu.com 
+ // @Project：红包SDK京东支付版
+ // @File：RPUserInfo.h 
+ // @Version: 3.5.1 
+
 
 #import <Foundation/Foundation.h>
 

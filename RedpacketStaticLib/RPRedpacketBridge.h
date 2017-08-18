@@ -1,10 +1,11 @@
-//
-//  RedpacketUserAccount.h
-//  ChatDemo-UI3.0
-//
-//  Created by Mr.Yang on 16/3/1.
-//  Copyright © 2016年 Mr.Yang. All rights reserved.
-//
+
+ // Create by Mr.Yang 
+ // Copyright © 2017年 云账户. All rights reserved. 
+ // 云账户：http://www.yunzhanghu.com 
+ // @Project：红包SDK京东支付版 
+ // @File：RPRedpacketBridge.h 
+ // @Version: 3.5.1 
+
 
 #import <Foundation/Foundation.h>
 

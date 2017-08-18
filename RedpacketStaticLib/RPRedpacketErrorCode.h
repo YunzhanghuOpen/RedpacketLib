@@ -1,10 +1,11 @@
-//
-//  RPRedpacketErrorCode.h
-//  RedpacketRequestDataLib
-//
-//  Created by Mr.Yang on 16/5/6.
-//  Copyright © 2016年 Mr.Yang. All rights reserved.
-//
+
+ // Create by Mr.Yang 
+ // Copyright © 2017年 云账户. All rights reserved. 
+ // 云账户：http://www.yunzhanghu.com 
+ // @Project：红包SDK京东支付版 
+ // @File：RPRedpacketErrorCode.h 
+ // @Version: 3.5.1 
+
 
 
 

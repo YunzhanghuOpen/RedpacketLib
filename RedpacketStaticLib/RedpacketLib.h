@@ -1,10 +1,33 @@
-//
-//  RedpacketLib.h
-//  RedpacketLib
-//
-//  Created by Mr.Yang on 16/9/20.
-//  Copyright © 2016年 Mr.Yang. All rights reserved.
-//
+
+ // Create by Mr.Yang 
+ // Copyright © 2017年 云账户. All rights reserved. 
+ // 云账户：http://www.yunzhanghu.com 
+ // @Project：红包SDK京东支付版 
+ // @File：RedpacketLib.h 
+ // @Version: 3.5.1
+
+ //                            _ooOoo_
+ //                           o8888888o
+ //                           88" . "88
+ //                           (| -_- |)
+ //                           O\  =  /O
+ //                        ____/`---'\____
+ //                      .'  \\|     |//  `.
+ //                     /  \\|||  :  |||//  \
+ //                    /  _||||| -:- |||||-  \
+ //                    |   | \\\  -  /// |   |
+ //                    | \_|  ''\---/''  |   |
+ //                    \  .-\__  `-`  ___/-. /
+ //                   ___`. .'  /--.--\  `. . __
+ //                ."" '<  `.___\_<|>_/___.'  >'"".
+ //              | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+ //              \  \ `-.   \_ __\ /__ _/   .-` /  /
+ //         ======`-.____`-.___\_____/___.-`____.-'======
+ //                            `=---='
+ //         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ //                  佛祖镇楼                  BUG辟易
+
+
 
 #ifndef RedpacketLib_h
 #define RedpacketLib_h
