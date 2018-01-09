@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'RedpacketLib'
-  s.version          = '3.5.0'
+  s.version          = '3.5.2'
   s.summary          = 'RedpacketSDK'
   s.description      = <<-DESC
                        RedpacketSDK, allow you to send redpacket in your project.
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.author           = { 'Mr.Yang' => 'tonggang.yang@yunzhanghu.com' }
   s.source           = { :git => 'https://github.com/YunzhanghuOpen/cocoapods-RedpacketLib.git', :tag => "#{s.version}" }
 
-  s.platform     = :ios, '7.0'
+  s.platform     = :ios, '8.0'
   s.requires_arc = true
 
   s.xcconfig     = {'OTHER_LDFLAGS' => '-ObjC'}

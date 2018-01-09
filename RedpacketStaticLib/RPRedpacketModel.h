@@ -58,7 +58,7 @@ typedef NS_ENUM(NSInteger, RPRedpacketStatusType) {
 /// 转账时间
 @property (nonatomic,   copy) NSString *tranferTime;
 /// 红包详情里我抢到的金额
-@property (nonatomic, assign) NSString *receiveMoney;
+@property (nonatomic,   copy) NSString *receiveMoney;
 /// 当前用户是否是红包的发送者
 @property (nonatomic, assign) BOOL isSender;
 /// 当前用户信息
